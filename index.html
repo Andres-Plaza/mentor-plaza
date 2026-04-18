@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mentor Plaza — Asistente de Inversión Inmobiliaria</title>
+<meta name="description" content="Tu asistente virtual de inversión inmobiliaria. Hecho por Andrés Plaza.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --bg: #F8FAFC;
+  --bg-alt: #F1F5F9;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --text: #0F172A;
+  --text-soft: #475569;
+  --text-muted: #94A3B8;
+  --blue: #1E40AF;
+  --blue-mid: #2563EB;
+  --blue-light: #3B82F6;
+  --sky: #38BDF8;
+  --sky-soft: #E0F2FE;
+  --accent: #0EA5E9;
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 32px -6px rgba(15, 23, 42, 0.10), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+
+/* ═══ HEADER ═══ */
+.header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue-light), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-logo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+}
+
+.brand-logo svg {
+  width: 22px;
+  height: 22px;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.brand-sub::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+}
+
+.header-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.header-link:hover {
+  background: var(--bg-alt);
+  color: var(--text);
+}
+
+/* ═══ CHAT AREA ═══ */
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 24px 160px;
+  scroll-behavior: smooth;
+}
+
+.chat::-webkit-scrollbar { width: 6px; }
+.chat::-webkit-scrollbar-track { background: transparent; }
+.chat::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* Welcome screen */
+.welcome {
+  max-width: 640px;
+  margin: 40px auto;
+  text-align: center;
+  animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--sky-soft);
+  color: var(--blue);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.welcome h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.welcome h1 em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.welcome p {
+  font-size: 16px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto 40px;
+}
+
+.suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 32px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.suggestion {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.suggestion:hover {
+  border-color: var(--blue-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  background: var(--white);
+}
+
+.suggestion-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--sky-soft);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+/* ═══ MESSAGES ═══ */
+.message {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 28px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: messageIn 0.4s ease;
+}
+
+@keyframes messageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.message.user .message-avatar {
+  background: var(--bg-alt);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+}
+
+.message.assistant .message-avatar {
+  background: linear-gradient(135deg, var(--blue-light), var(--blue));
+  color: white;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
+}
+
+.message-content {
+  flex: 1;
+  padding-top: 6px;
+  line-height: 1.65;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.message-content p {
+  margin-bottom: 10px;
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+.message-content strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.message-content ul,
+.message-content ol {
+  padding-left: 20px;
+  margin: 8px 0 14px;
+}
+
+.message-content li {
+  margin-bottom: 4px;
+}
+
+.message-content a {
+  color: var(--blue-mid);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+  transition: border-color 0.2s;
+}
+
+.message-content a:hover {
+  border-bottom-color: var(--blue-mid);
+}
+
+.message-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.message.user .message-name {
+  color: var(--text-soft);
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.loading-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  animation: loadingPulse 1.4s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loadingPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ═══ INPUT AREA ═══ */
+.input-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px 20px;
+  background: linear-gradient(180deg, transparent, var(--white) 20%);
+  z-index: 10;
+}
+
+.input-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 8px 8px 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-md);
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--blue-light);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), var(--shadow-md);
+}
+
+.input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  resize: none;
+  max-height: 140px;
+  padding: 10px 0;
+  background: transparent;
+  line-height: 1.5;
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue-light), var(--blue));
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+}
+
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--border-strong);
+  box-shadow: none;
+}
+
+.input-hint {
+  max-width: 720px;
+  margin: 8px auto 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Error state */
+.error {
+  max-width: 720px;
+  margin: 0 auto 16px;
+  padding: 12px 16px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  color: #991B1B;
+  font-size: 13px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .app {
+    border: none;
+  }
+  
+  .header {
+    padding: 12px 16px;
+  }
+  
+  .chat {
+    padding: 24px 16px 160px;
+  }
+  
+  .welcome {
+    margin: 20px auto;
+  }
+  
+  .welcome h1 {
+    font-size: 36px;
+  }
+  
+  .welcome p {
+    font-size: 14px;
+  }
+  
+  .suggestions {
+    grid-template-columns: 1fr;
+  }
+  
+  .input-container {
+    padding: 12px 16px 16px;
+  }
+  
+  .message {
+    gap: 10px;
+  }
+  
+  .message-content {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18"/>
+          <path d="M5 21V7l7-4 7 4v14"/>
+          <path d="M9 9h1"/>
+          <path d="M14 9h1"/>
+          <path d="M9 13h1"/>
+          <path d="M14 13h1"/>
+          <path d="M9 17h1"/>
+          <path d="M14 17h1"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Mentor Plaza</div>
+        <div class="brand-sub">En línea · Por Andrés Plaza</div>
+      </div>
+    </div>
+    <a href="https://instagram.com/andresplaza.cl" target="_blank" class="header-link">@andresplaza.cl</a>
+  </header>
+
+  <!-- CHAT -->
+  <main class="chat" id="chat">
+    <div class="welcome" id="welcome">
+      <div class="welcome-badge">
+        <span>✦</span>
+        <span>Asistente virtual</span>
+      </div>
+      <h1>Hola, soy tu <em>Mentor Plaza</em></h1>
+      <p>Respondo tus dudas sobre inversión en departamentos en Chile y te ayudo a entender si es el momento correcto para dar el siguiente paso. Todo basado en la experiencia real de Andrés Plaza.</p>
+      
+      <div class="suggestions">
+        <button class="suggestion" onclick="sendSuggestion('¿Cuánto necesito ganar para poder invertir en un departamento?')">
+          <div class="suggestion-icon">💰</div>
+          <span>¿Cuánto necesito ganar para invertir?</span>
+        </button>
+        <button class="suggestion" onclick="sendSuggestion('¿Por qué invertir en Concepción y no en Santiago?')">
+          <div class="suggestion-icon">📍</div>
+          <span>¿Por qué Concepción y no Santiago?</span>
+        </button>
+        <button class="suggestion" onclick="sendSuggestion('¿Cómo funciona el apalancamiento con créditos hipotecarios?')">
+          <div class="suggestion-icon">📊</div>
+          <span>Cómo funciona el apalancamiento</span>
+        </button>
+        <button class="suggestion" onclick="sendSuggestion('Gano $1.800.000 líquidos y tengo $10 millones ahorrados. ¿Me alcanza para invertir?')">
+          <div class="suggestion-icon">🏢</div>
+          <span>Analiza mi caso personal</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- INPUT -->
+  <div class="input-container">
+    <div class="input-wrapper">
+      <textarea 
+        class="input-field" 
+        id="input" 
+        placeholder="Pregúntame cualquier cosa sobre inversión inmobiliaria..."
+        rows="1"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="input-hint">
+      Mentor Plaza puede cometer errores. Para decisiones importantes, consulta directamente con <a href="https://instagram.com/andresplaza.cl" target="_blank" style="color: var(--blue-mid);">Andrés</a>.
+    </div>
+  </div>
+
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const welcome = document.getElementById('welcome');
+
+let conversationHistory = [];
+let isWaiting = false;
+
+// Auto-resize textarea
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+});
+
+// Enter to send (Shift+Enter for new line)
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+function sendSuggestion(text) {
+  input.value = text;
+  sendMessage();
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function formatMarkdown(text) {
+  // Bold
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italics
+  text = text.replace(/(?<!\*)\*([^\*]+)\*(?!\*)/g, '<em>$1</em>');
+  // Line breaks
+  text = text.replace(/\n\n/g, '</p><p>');
+  text = text.replace(/\n/g, '<br>');
+  return '<p>' + text + '</p>';
+}
+
+function addMessage(role, content) {
+  if (welcome) welcome.remove();
+
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${role}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'message-avatar';
+  avatar.textContent = role === 'user' ? 'Tú' : 'MP';
+
+  const contentDiv = document.createElement('div');
+  contentDiv.className = 'message-content';
+
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'message-name';
+  nameDiv.textContent = role === 'user' ? 'Tú' : 'Mentor Plaza';
+
+  const textDiv = document.createElement('div');
+  textDiv.innerHTML = formatMarkdown(content);
+
+  contentDiv.appendChild(nameDiv);
+  contentDiv.appendChild(textDiv);
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(contentDiv);
+  chat.appendChild(messageDiv);
+
+  chat.scrollTop = chat.scrollHeight;
+  return textDiv;
+}
+
+function addLoading() {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'message assistant';
+  messageDiv.id = 'loading-msg';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'message-avatar';
+  avatar.textContent = 'MP';
+
+  const contentDiv = document.createElement('div');
+  contentDiv.className = 'message-content';
+  contentDiv.innerHTML = `
+    <div class="message-name">Mentor Plaza</div>
+    <div class="loading">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+  `;
+
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(contentDiv);
+  chat.appendChild(messageDiv);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeLoading() {
+  const loading = document.getElementById('loading-msg');
+  if (loading) loading.remove();
+}
+
+function showError(msg) {
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error';
+  errorDiv.textContent = msg;
+  chat.appendChild(errorDiv);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || isWaiting) return;
+
+  isWaiting = true;
+  sendBtn.disabled = true;
+  input.value = '';
+  input.style.height = 'auto';
+
+  addMessage('user', text);
+  conversationHistory.push({ role: 'user', content: text });
+
+  addLoading();
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory })
+    });
+
+    if (!response.ok) {
+      throw new Error('Error del servidor: ' + response.status);
+    }
+
+    const data = await response.json();
+    
+    removeLoading();
+
+    if (data.error) {
+      showError('Lo siento, hubo un problema. Intenta de nuevo en un momento.');
+    } else {
+      const reply = data.content[0].text;
+      addMessage('assistant', reply);
+      conversationHistory.push({ role: 'assistant', content: reply });
+    }
+  } catch (error) {
+    removeLoading();
+    showError('No pude conectarme. Revisa tu conexión e intenta de nuevo.');
+    console.error('Error:', error);
+  } finally {
+    isWaiting = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+
+input.focus();
+</script>
+
+</body>
+</html>

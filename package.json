@@ -1,0 +1,9 @@
+{
+  "name": "mentor-plaza",
+  "version": "1.0.0",
+  "description": "Asistente virtual de inversión inmobiliaria de Andrés Plaza",
+  "private": true,
+  "engines": {
+    "node": ">=18.x"
+  }
+}
